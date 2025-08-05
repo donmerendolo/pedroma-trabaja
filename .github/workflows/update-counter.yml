@@ -19,6 +19,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
+
+      - name: Cambiar a la rama update-counter-action
+        shell: bash
+        run: |
+          # Si no existe, la crea; si existe, se cambia
+          if ! git rev-parse --verify update-counter-action >/dev/null 2>&1; then
+            git checkout -b update-counter-action
+          else
+            git checkout update-counter-action
+          fi
 
       - name: Update HTML counter
         shell: bash
@@ -42,15 +53,18 @@ jobs:
             -E 's|<meta property="og:description" content="[^"]*"|<meta property="og:description" content="Desde el 13 de junio de 2025, **'"$diff"'** días transcurridos"|' \
             index.html
 
-      - name: Commit & push changes
+
+      - name: Commit & push changes a update-counter-action
         shell: bash
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
           git add index.html
+
           if ! git diff --staged --quiet; then
             git commit -m "Update counter: $(date +%Y-%m-%d)"
-            git push
+            # Empuja a la rama concreta:
+            git push origin update-counter-action
           else
-            echo "No changes to commit."
+            echo "No hay cambios para commitear."
           fi
