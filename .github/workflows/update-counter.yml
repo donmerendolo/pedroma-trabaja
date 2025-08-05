@@ -27,7 +27,7 @@ jobs:
           BRANCH="update-counter-action"
           git fetch origin $BRANCH
           git checkout $BRANCH || git checkout -b $BRANCH
-          git reset --hard origin/$BRANCH
+          git reset --hard origin/master
 
       - name: Update HTML counter
         shell: bash
