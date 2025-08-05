@@ -21,16 +21,13 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Cambiar a la rama update-counter-action
-        shell: bash
+      - name: Actualiza la rama desde origin (ignora cualquier cambio local)
         run: |
-          # Si no existe, la crea; si existe, se cambia
-          if ! git rev-parse --verify update-counter-action >/dev/null 2>&1; then
-            git checkout -b update-counter-action
-          else
-            git checkout update-counter-action
-          fi
-          git pull origin update-counter-action
+          # Define aquí la rama que quieras sincronizar
+          BRANCH="update-counter-action"
+          git fetch origin $BRANCH
+          git checkout $BRANCH || git checkout -b $BRANCH
+          git reset --hard origin/$BRANCH
 
       - name: Update HTML counter
         shell: bash
@@ -65,7 +62,7 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "Update counter: $(date +%Y-%m-%d)"
             # Empuja a la rama concreta:
-            git push origin update-counter-action
+            git push origin update-counter-action --force
           else
             echo "No hay cambios para commitear."
           fi
