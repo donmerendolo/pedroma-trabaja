@@ -30,6 +30,7 @@ jobs:
           else
             git checkout update-counter-action
           fi
+          git pull origin update-counter-action
 
       - name: Update HTML counter
         shell: bash
