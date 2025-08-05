@@ -6,20 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contador de Días</title>
     <!-- Meta tags para Discord embed -->
-    <meta property="og:title" content="Días transcurridos" id="ogTitle">
-    <meta property="og:description" content="Días transcurridos desde el 13 de junio de 2025" id="ogDescription">
+    <meta property="og:title" content="Pedroma trabaja" id="ogTitle">
+    <meta property="og:description" content="Han pasado 0 días" id="ogDescription">>
     <meta property="og:image"
         content="https://donmerendolo.github.io/pedroma-trabaja/voy_a_trabajar_en_menos_de_10_días.jpeg">
     <meta property="og:url" content="https://donmerendolo.github.io/pedroma-trabaja/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Contador de Días">
 
-    <!-- Twitter Card tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Días transcurridos" id="twitterTitle">
-    <meta name="twitter:description" content="Días transcurridos desde el 13 de junio de 2025" id="twitterDescription">
-    <meta name="twitter:image"
-        content="https://donmerendolo.github.io/pedroma-trabaja/voy_a_trabajar_en_menos_de_10_días.jpeg">
     <style>
         * {
             margin: 0;
@@ -111,7 +104,7 @@
         </div>
 
         <div class="counter-section">
-            <div class="date-info">Desde el 13 de junio de 2025</div>
+            <div class="date-info">Desde el 13 de junio de 2025,</div>
             <div class="counter" id="dayCounter">0</div>
             <div class="counter-label">días transcurridos</div>
         </div>
@@ -135,26 +128,6 @@
         function updateCounter() {
             const days = calculateDays();
             document.getElementById('dayCounter').textContent = days;
-            // Actualizar meta tags para Discord
-            const description = `${days} días transcurridos desde el 13 de junio de 2025`;
-            const title = `${days} días transcurridos`;
-
-            // Actualizar título de la página
-            document.title = title;
-
-            // Actualizar Open Graph tags
-            const ogTitle = document.getElementById('ogTitle');
-            if (ogTitle) ogTitle.setAttribute('content', title);
-
-            const ogDesc = document.getElementById('ogDescription');
-            if (ogDesc) ogDesc.setAttribute('content', description);
-
-            // Actualizar Twitter tags
-            const twitterTitle = document.getElementById('twitterTitle');
-            if (twitterTitle) twitterTitle.setAttribute('content', title);
-
-            const twitterDesc = document.getElementById('twitterDescription');
-            if (twitterDesc) twitterDesc.setAttribute('content', description);
         }
 
         // Inicializar
