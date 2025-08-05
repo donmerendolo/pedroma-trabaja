@@ -48,9 +48,8 @@ jobs:
           # Reemplazar meta tag. 
           # Usamos | como separador para no escapar /
           sed -i \
-            -E 's|<meta property="og:description" content="[^"]*"|<meta property="og:description" content="Desde el 13 de junio de 2025, **'"$diff"'** días transcurridos"|' \
+            -E 's|<meta property="og:description" content="[^"]*"|<meta property="og:description" content="Han pasado '"$diff"' días desde el 13 de junio de 2025"|' \
             index.html
-
 
       - name: Commit & push changes a update-counter-action
         shell: bash
