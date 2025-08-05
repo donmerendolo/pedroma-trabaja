@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Días</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+        }
+
+        .image-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        .image-placeholder:hover {
+            border-color: #999;
+        }
+
+        .image-placeholder.has-image {
+            border: none;
+            padding: 0;
+        }
+
+        .uploaded-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .image-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .counter-section {
+            margin-top: 20px;
+        }
+
+        .date-info {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .counter {
+            font-size: 4rem;
+            font-weight: 300;
+            color: #2c3e50;
+            margin: 20px 0;
+            line-height: 1;
+        }
+
+        .counter-label {
+            font-size: 18px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: -10px;
+            right: calc(50% - 110px);
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            display: none;
+        }
+
+        .image-container.has-image .remove-image {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .counter {
+                font-size: 3rem;
+            }
+            
+            .image-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container" id="imageContainer">
+            <div class="image-placeholder" id="imagePlaceholder" onclick="document.getElementById('fileInput').click()">
+                <span class="image-text">Haz clic para agregar imagen</span>
+            </div>
+            <button class="remove-image" id="removeImage" onclick="removeImage()">×</button>
+            <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleImageUpload(event)">
+        </div>
+        
+        <div class="counter-section">
+            <div class="date-info">Desde el 13 de junio de 2025</div>
+            <div class="counter" id="dayCounter">0</div>
+            <div class="counter-label">días transcurridos</div>
+        </div>
+    </div>
+
+    <script>
+        // Fecha objetivo
+        const targetDate = new Date('2025-06-13');
+        
+        // Función para calcular días transcurridos
+        function calculateDays() {
+            const currentDate = new Date();
+            const timeDifference = currentDate.getTime() - targetDate.getTime();
+            const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+            
+            // Si la fecha aún no ha llegado, mostrar días negativos o 0
+            return Math.max(0, daysDifference);
+        }
+        
+        // Actualizar contador
+        function updateCounter() {
+            const days = calculateDays();
+            document.getElementById('dayCounter').textContent = days;
+        }
+        
+        // Manejar subida de imagen
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePlaceholder = document.getElementById('imagePlaceholder');
+                    imagePlaceholder.innerHTML = `<img src="${e.target.result}" alt="Imagen subida" class="uploaded-image">`;
+                    imagePlaceholder.classList.add('has-image');
+                    document.getElementById('imageContainer').classList.add('has-image');
+                    
+                    // Guardar imagen en localStorage
+                    localStorage.setItem('uploadedImage', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Remover imagen
+        function removeImage() {
+            const imagePlaceholder = document.getElementById('imagePlaceholder');
+            imagePlaceholder.innerHTML = '<span class="image-text">Haz clic para agregar imagen</span>';
+            imagePlaceholder.classList.remove('has-image');
+            document.getElementById('imageContainer').classList.remove('has-image');
+            document.getElementById('fileInput').value = '';
+            
+            // Remover de localStorage
+            localStorage.removeItem('uploadedImage');
+        }
+        
+        // Cargar imagen guardada al iniciar
+        function loadSavedImage() {
+            const savedImage = localStorage.getItem('uploadedImage');
+            if (savedImage) {
+                const imagePlaceholder = document.getElementById('imagePlaceholder');
+                imagePlaceholder.innerHTML = `<img src="${savedImage}" alt="Imagen guardada" class="uploaded-image">`;
+                imagePlaceholder.classList.add('has-image');
+                document.getElementById('imageContainer').classList.add('has-image');
+            }
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounter();
+            loadSavedImage();
+            
+            // Actualizar cada día (opcional)
+            setInterval(updateCounter, 86400000); // 24 horas en milisegundos
+        });
+    </script>
+</body>
+</html>
