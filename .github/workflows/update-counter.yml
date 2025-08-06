@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+env:
+  # Fija la zona horaria a CEST para todos los comandos date
+  TZ: Europe/Madrid
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -48,7 +52,7 @@ jobs:
           # Reemplazar meta tag. 
           # Usamos | como separador para no escapar /
           sed -i \
-            -E 's|<meta property="og:description" content="[^"]*"|<meta property="og:description" content="Han pasado '"$diff"' días desde el 13 de junio de 2025"|' \
+            -E 's|Han pasado 0 días desde el 13 de junio de 2025|Han pasado '"$diff"' días desde el 13 de junio de 2025|' \
             index.html
 
       - name: Commit & push changes a update-counter-action
