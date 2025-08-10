@@ -49,10 +49,11 @@ jobs:
             diff=0
           fi
 
-          # Reemplazar meta tag. 
+          # Reemplazar meta tag y el contador en una sola llamada a sed.
           # Usamos | como separador para no escapar /
-          sed -i \
-            -E 's|Han pasado 0 días desde el 13 de junio de 2025|Han pasado '"$diff"' días desde el 13 de junio de 2025|' \
+          sed -i -E \
+            -e 's|Han pasado [0-9]+ días desde el 13 de junio de 2025|Han pasado '"$diff"' días desde el 13 de junio de 2025|' \
+            -e 's|<div class="counter" id="dayCounter">[0-9]+</div>|<div class="counter" id="dayCounter">'"$diff"'</div>|' \
             index.html
 
       - name: Commit & push changes a update-counter-action

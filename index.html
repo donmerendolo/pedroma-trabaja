@@ -120,35 +120,6 @@
             <div class="counter-label">días desde el 13 de junio de 2025</div>
         </div>
     </div>
-
-    <script>
-        // Fecha objetivo
-        const targetDate = new Date('2025-06-13');
-
-        // Función para calcular días transcurridos
-        function calculateDays() {
-            const currentDate = new Date();
-            const timeDifference = currentDate.getTime() - targetDate.getTime();
-            const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-
-            // Si la fecha aún no ha llegado, mostrar días negativos o 0
-            return Math.max(0, daysDifference);
-        }
-
-        // Actualizar contador y meta tags
-        function updateCounter() {
-            const days = calculateDays();
-            document.getElementById('dayCounter').textContent = days;
-        }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function () {
-            updateCounter();
-
-            // Actualizar cada día (opcional)
-            setInterval(updateCounter, 86400000); // 24 horas en milisegundos
-        });
-    </script>
 </body>
 
 </html>
