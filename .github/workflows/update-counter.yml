@@ -43,10 +43,11 @@ jobs:
         env:
           TRIGGER_TYPE: ${{ github.event_name }}
         run: |
+          BRANCH="update-counter-action"
           current_date=$(date +%Y-%m-%d)
           
           # Check last commit date on this branch
-          last_commit_date=$(git log -1 --format=%cd --date=format-local:'%Y-%m-%d' 2>/dev/null || echo "")
+          last_commit_date=$(git log -1 origin/$BRANCH --format=%cd --date=format-local:'%Y-%m-%d' 2>/dev/null || echo "")
           
           echo "Last commit: $last_commit_date"
           echo "Current date: $current_date"
